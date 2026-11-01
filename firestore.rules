@@ -1,0 +1,154 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function uid() {
+      return request.auth.uid;
+    }
+
+    function isSelf(userId) {
+      return signedIn() && uid() == userId;
+    }
+
+    // Membership lives in groups/{g}/access/{uid}, which no client can read. Rule lookups can, so
+    // this is how every group subcollection checks the caller is a member.
+    function accessPath(groupId) {
+      return /databases/$(database)/documents/groups/$(groupId)/access/$(uid());
+    }
+
+    function hasAccess(groupId) {
+      return signedIn() && exists(accessPath(groupId));
+    }
+
+    function optionalNumber(d, key, max) {
+      return !(key in d) || d[key] == null || (d[key] is number && d[key] >= 0 && d[key] <= max);
+    }
+
+    function validDaily(userId, date) {
+      let d = request.resource.data;
+      return d.userId == userId
+        && d.date == date
+        && d.timeZone is string
+        && d.timeZone.size() > 0
+        && optionalNumber(d, 'steps', 200000)
+        && optionalNumber(d, 'distanceMeters', 300000)
+        && optionalNumber(d, 'activeCalories', 20000)
+        && optionalNumber(d, 'activeMinutes', 1440)
+        && optionalNumber(d, 'workoutMinutes', 1440)
+        && optionalNumber(d, 'workoutCount', 100)
+        && optionalNumber(d, 'floors', 2000)
+        && optionalNumber(d, 'mindfulMinutes', 1440)
+        && (!('shared' in d) || d.shared is list)
+        && (!('workoutsByType' in d) || d.workoutsByType is map)
+        && d.computedAt is timestamp;
+    }
+
+    function validAbout(d) {
+      return !('about' in d) || d.about == null || (d.about is string && d.about.size() <= 160);
+    }
+
+    // Profiles are private. Username and alias are written only by Cloud Functions, which keep
+    // them unique; the user edits their name, photo, "About me", zone, goals and settings.
+    match /users/{userId} {
+      allow read: if isSelf(userId);
+      allow create: if isSelf(userId) && validAbout(request.resource.data)
+        && request.resource.data.keys().hasOnly(
+          ['displayName', 'photoUrl', 'about', 'tz', 'lastSyncAt', 'settings', 'goals', 'dataPaused', 'updatedAt']
+        );
+      allow update: if isSelf(userId) && validAbout(request.resource.data)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(
+          ['displayName', 'photoUrl', 'about', 'tz', 'lastSyncAt', 'settings', 'goals', 'dataPaused', 'updatedAt']
+        );
+      allow delete: if false; // account deletion goes through the deleteAccount callable
+
+      match /daily/{date} {
+        allow read: if isSelf(userId);
+        allow create, update: if isSelf(userId) && validDaily(userId, date);
+        allow delete: if isSelf(userId);
+      }
+
+      match /devices/{deviceId} {
+        allow read, write: if isSelf(userId);
+      }
+
+      // "My groups" and the invite inbox: written by Cloud Functions, read by their owner.
+      match /memberships/{groupId} {
+        allow read: if isSelf(userId);
+        allow write: if false;
+      }
+
+      match /inbox/{inviteId} {
+        allow read: if isSelf(userId);
+        allow write: if false;
+      }
+    }
+
+    // Username, display name and photo. Never an email. Fetched by id only, never listed.
+    match /publicProfiles/{userId} {
+      allow get: if signedIn();
+      allow list, write: if false;
+    }
+
+    // Availability checks while choosing a name. Neither document reveals who owns an alias.
+    match /usernames/{name} {
+      allow get: if signedIn();
+      allow list, write: if false;
+    }
+
+    match /aliases/{name} {
+      allow get: if signedIn();
+      allow list, write: if false;
+    }
+
+    match /groups/{groupId} {
+      // Public groups appear in Discover; invite-only groups only to their members.
+      allow get: if signedIn() && (resource.data.visibility == 'PUBLIC' || hasAccess(groupId));
+      allow list: if signedIn()
+        && resource.data.visibility == 'PUBLIC'
+        && resource.data.status == 'ACTIVE';
+      // Created, edited and deleted only through Cloud Functions. Identity can never change.
+      allow write: if false;
+
+      match /members/{memberId} {
+        allow read: if hasAccess(groupId);
+        allow write: if false;
+      }
+
+      // Reactions are the only thing members write, as themselves (their member id, not uid).
+      match /feed/{eventId} {
+        allow read: if hasAccess(groupId);
+        allow create: if hasAccess(groupId)
+          && request.resource.data.type == 'REACTION'
+          && request.resource.data.actorMemberId == get(accessPath(groupId)).data.memberId
+          && request.resource.data.keys().hasOnly(['type', 'actorMemberId', 'message', 'data', 'createdAt'])
+          && request.resource.data.message == null;
+        allow update, delete: if false;
+      }
+
+      // Challenges, scores, summaries and day boards: computed by Cloud Functions only.
+      match /challenges/{challengeId}/{document=**} {
+        allow read: if hasAccess(groupId);
+        allow write: if false;
+      }
+
+      match /challenges/{challengeId} {
+        allow read: if hasAccess(groupId);
+        allow write: if false;
+      }
+
+      // access, bans: no client rule, so no client access.
+    }
+
+    // Invite codes are secrets, handled entirely by callables.
+    match /invites/{code} {
+      allow read, write: if false;
+    }
+
+    // aliasOwners, reports and rateLimits have no rules on purpose: server only.
+  }
+}

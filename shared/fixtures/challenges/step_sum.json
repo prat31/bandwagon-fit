@@ -1,0 +1,29 @@
+{
+  "name": "Steps add up; days outside the window and over the cap are ignored",
+  "spec": {
+    "schemaVersion": 1, "kind": "COMPETE", "metric": { "id": "steps" }, "daily": { "op": "value" },
+    "aggregate": "SUM", "window": { "start": "2026-11-02", "end": "2026-11-04" },
+    "display": { "templateId": "step_battle", "renderer": "LEADERBOARD", "title": "Steps" }
+  },
+  "members": {
+    "a": [
+      { "date": "2026-11-01", "steps": 50000, "shared": ["steps"] },
+      { "date": "2026-11-02", "steps": 8000, "shared": ["steps"] },
+      { "date": "2026-11-03", "steps": 120000, "shared": ["steps"] },
+      { "date": "2026-11-04", "steps": 4000, "shared": ["steps"] }
+    ],
+    "b": [
+      { "date": "2026-11-02", "steps": 6000, "shared": ["steps"] },
+      { "date": "2026-11-03", "steps": 6000, "shared": ["steps"] }
+    ],
+    "c": [
+      { "date": "2026-11-02", "steps": 12000, "shared": ["steps"] }
+    ]
+  },
+  "expected": {
+    "a": { "score": 12000, "daysHit": 2, "daysWithData": 2, "flagged": true, "notShared": false },
+    "b": { "score": 12000, "daysHit": 2, "daysWithData": 2, "flagged": false, "notShared": false },
+    "c": { "score": 12000, "daysHit": 1, "daysWithData": 1, "flagged": false, "notShared": false }
+  },
+  "ranks": { "a": 1, "b": 1, "c": 1 }
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Health data never leaves the phone through backups: both local databases are excluded. -->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="database" path="bandwagon.db" />
+        <exclude domain="database" path="health_store.db" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="database" path="bandwagon.db" />
+        <exclude domain="database" path="health_store.db" />
+    </device-transfer>
+</data-extraction-rules>

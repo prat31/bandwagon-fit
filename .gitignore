@@ -8,6 +8,12 @@ local.properties
 
 # Log/OS Files
 *.log
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# macOS
+.DS_Store
 
 # Android Studio generated files and folders
 captures/
@@ -24,12 +30,58 @@ misc.xml
 deploymentTargetDropDown.xml
 render.experimental.xml
 
-# Keystore files
+# Release signing: never commit keys or their passwords (see keystore.properties.example)
 *.jks
 *.keystore
+*.p12
+*.pem
+keystore.properties
 
 # Google Services (e.g. APIs or Firebase)
 google-services.json
+/app/google-services.json
+/app/src/*/google-services.json
 
 # Android Profiling
 *.hprof
+
+# Firebase emulators / Functions
+.firebase/
+/functions/node_modules/
+/functions/lib/
+/functions/.env
+/functions/.env.*
+/functions/.runtimeconfig.json
+/functions/*-debug.log
+/functions/coverage/
+pubsub-debug.log
+database-debug.log
+# Emulator data saved with --export-on-exit
+/.emulator-data/
+firebase-export-*/
+
+# Service account keys (Play Console publishing, Firebase Admin) and env files
+*service-account*.json
+play-store-credentials.json
+.env
+.env.*
+
+# Node
+node_modules/
+
+# Fastlane outputs
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/test_output/
+
+# Editors
+.vscode/
+*.swp
+
+# Local AI agent state (shared agent docs live in AGENTS.md)
+.claude/settings.local.json
+.claude/worktrees/
+
+# Private planning notes (kept locally, not published)
+/plan/
+/docs/plan-*.md

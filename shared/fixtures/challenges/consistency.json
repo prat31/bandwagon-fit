@@ -1,0 +1,31 @@
+{
+  "name": "Days over the target win; total steps break ties",
+  "spec": {
+    "schemaVersion": 1, "kind": "COMPETE", "metric": { "id": "steps" },
+    "daily": { "op": "atLeast", "value": 8000 }, "aggregate": "DAYS_HIT",
+    "ranking": { "tieBreak": "SUM" }, "window": { "start": "2026-11-02", "end": "2026-11-05" },
+    "display": { "templateId": "consistency", "renderer": "LEADERBOARD", "title": "Consistency" }
+  },
+  "members": {
+    "a": [
+      { "date": "2026-11-02", "steps": 9000, "shared": ["steps"] },
+      { "date": "2026-11-03", "steps": 9000, "shared": ["steps"] },
+      { "date": "2026-11-04", "steps": 100, "shared": ["steps"] }
+    ],
+    "b": [
+      { "date": "2026-11-02", "steps": 8000, "shared": ["steps"] },
+      { "date": "2026-11-03", "steps": 15000, "shared": ["steps"] }
+    ],
+    "c": [
+      { "date": "2026-11-02", "steps": 8000, "shared": ["steps"] },
+      { "date": "2026-11-03", "steps": 8000, "shared": ["steps"] },
+      { "date": "2026-11-04", "steps": 8000, "shared": ["steps"] }
+    ]
+  },
+  "expected": {
+    "a": { "score": 2, "tieBreak": 18100, "daysHit": 2 },
+    "b": { "score": 2, "tieBreak": 23000, "daysHit": 2 },
+    "c": { "score": 3, "tieBreak": 24000, "daysHit": 3 }
+  },
+  "ranks": { "c": 1, "b": 2, "a": 3 }
+}

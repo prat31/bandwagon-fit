@@ -1,0 +1,106 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "e798cf2581dd0eb6bc6d5cedd675bdc8",
+    "entities": [
+      {
+        "tableName": "daily_summaries",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`date` TEXT NOT NULL, `userId` TEXT NOT NULL, `timeZone` TEXT NOT NULL, `steps` INTEGER, `workoutMinutes` INTEGER, `workoutCount` INTEGER, `sleepStart` TEXT, `sleepEnd` TEXT, `sleepDurationMinutes` INTEGER, `sleepZone` TEXT, `sources` TEXT NOT NULL, `manualExcluded` INTEGER NOT NULL, `computedAt` INTEGER NOT NULL, PRIMARY KEY(`date`))",
+        "fields": [
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "userId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timeZone",
+            "columnName": "timeZone",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "steps",
+            "columnName": "steps",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "workoutMinutes",
+            "columnName": "workoutMinutes",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "workoutCount",
+            "columnName": "workoutCount",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sleepStart",
+            "columnName": "sleepStart",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sleepEnd",
+            "columnName": "sleepEnd",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sleepDurationMinutes",
+            "columnName": "sleepDurationMinutes",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sleepZone",
+            "columnName": "sleepZone",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sources",
+            "columnName": "sources",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "manualExcluded",
+            "columnName": "manualExcluded",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "computedAt",
+            "columnName": "computedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "date"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e798cf2581dd0eb6bc6d5cedd675bdc8')"
+    ]
+  }
+}

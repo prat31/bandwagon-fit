@@ -1,0 +1,23 @@
+{
+  "name": "A member who doesn't share the metric is marked not shared, never zero",
+  "spec": {
+    "schemaVersion": 1, "kind": "COMPETE", "metric": { "id": "floors" }, "daily": { "op": "value" },
+    "aggregate": "SUM", "window": { "start": "2026-11-02", "end": "2026-11-03" },
+    "display": { "templateId": "floors_frenzy", "renderer": "LEADERBOARD", "title": "Floors" }
+  },
+  "members": {
+    "a": [
+      { "date": "2026-11-02", "steps": 9000, "shared": ["steps"] },
+      { "date": "2026-11-03", "steps": 9000, "shared": ["steps"] }
+    ],
+    "b": [
+      { "date": "2026-11-02", "floors": 12, "shared": ["steps", "floors"] }
+    ],
+    "c": []
+  },
+  "expected": {
+    "a": { "score": 0, "notShared": true, "daysWithData": 0 },
+    "b": { "score": 12, "notShared": false, "daysWithData": 1 },
+    "c": { "score": 0, "notShared": false, "daysWithData": 0 }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "Target goals finish on the day the running total reaches the goal; earlier wins ties",
+  "spec": {
+    "schemaVersion": 1, "kind": "TARGET", "metric": { "id": "active_minutes" }, "daily": { "op": "value" },
+    "aggregate": "SUM", "goal": { "target": 150 }, "ranking": { "tieBreak": "EARLIEST_FINISH" },
+    "window": { "start": "2026-11-02", "end": "2026-11-08" },
+    "display": { "templateId": "club_150", "renderer": "PROGRESS", "title": "150" }
+  },
+  "members": {
+    "a": [
+      { "date": "2026-11-02", "activeMinutes": 100, "shared": ["active_minutes"] },
+      { "date": "2026-11-03", "activeMinutes": 60, "shared": ["active_minutes"] }
+    ],
+    "b": [
+      { "date": "2026-11-02", "activeMinutes": 40, "shared": ["active_minutes"] },
+      { "date": "2026-11-05", "activeMinutes": 40, "shared": ["active_minutes"] }
+    ]
+  },
+  "expected": {
+    "a": { "score": 160, "finished": true, "finishedOn": "2026-11-03", "progress": 1, "tieBreak": -1 },
+    "b": { "score": 80, "finished": false, "finishedOn": null, "progress": 0.5333333333333333, "tieBreak": -366 }
+  }
+}

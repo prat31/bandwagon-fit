@@ -1,0 +1,264 @@
+{
+  "schemaVersion": 1,
+  "templates": [
+    {
+      "id": "step_battle",
+      "name": "Step Battle",
+      "tagline": "Most steps wins.",
+      "icon": "steps",
+      "durationDays": 7,
+      "fields": ["duration", "recurrence"],
+      "spec": {
+        "kind": "COMPETE",
+        "metric": { "id": "steps" },
+        "daily": { "op": "value" },
+        "aggregate": "SUM",
+        "display": { "renderer": "LEADERBOARD" }
+      }
+    },
+    {
+      "id": "daily_showdown",
+      "name": "Daily Showdown",
+      "tagline": "One day, most steps wins.",
+      "icon": "bolt",
+      "durationDays": 1,
+      "fields": [],
+      "spec": {
+        "kind": "COMPETE",
+        "metric": { "id": "steps" },
+        "daily": { "op": "value" },
+        "aggregate": "SUM",
+        "display": { "renderer": "LEADERBOARD" }
+      }
+    },
+    {
+      "id": "weekend_warrior",
+      "name": "Weekend Warrior",
+      "tagline": "Saturday and Sunday steps.",
+      "icon": "weekend",
+      "durationDays": 2,
+      "startOn": 6,
+      "fields": ["recurrence"],
+      "spec": {
+        "kind": "COMPETE",
+        "metric": { "id": "steps" },
+        "daily": { "op": "value" },
+        "aggregate": "SUM",
+        "display": { "renderer": "LEADERBOARD" }
+      }
+    },
+    {
+      "id": "workweek_hustle",
+      "name": "Workweek Hustle",
+      "tagline": "Monday to Friday steps.",
+      "icon": "work",
+      "durationDays": 5,
+      "startOn": 1,
+      "fields": ["recurrence"],
+      "spec": {
+        "kind": "COMPETE",
+        "metric": { "id": "steps" },
+        "daily": { "op": "value" },
+        "aggregate": "SUM",
+        "display": { "renderer": "LEADERBOARD" }
+      }
+    },
+    {
+      "id": "consistency",
+      "name": "Consistency",
+      "tagline": "Most days over your step target.",
+      "icon": "calendar",
+      "durationDays": 7,
+      "fields": ["duration", "dailyTarget"],
+      "spec": {
+        "kind": "COMPETE",
+        "metric": { "id": "steps" },
+        "daily": { "op": "atLeast", "value": 8000 },
+        "aggregate": "DAYS_HIT",
+        "ranking": { "tieBreak": "SUM" },
+        "display": { "renderer": "LEADERBOARD" }
+      }
+    },
+    {
+      "id": "active_league",
+      "name": "Active Minutes League",
+      "tagline": "Weekly active minutes, 120 a day at most.",
+      "icon": "heart",
+      "durationDays": 7,
+      "fields": ["dailyCap", "recurrence"],
+      "spec": {
+        "kind": "COMPETE",
+        "metric": { "id": "active_minutes" },
+        "daily": { "op": "cap", "max": 120 },
+        "aggregate": "SUM",
+        "window": { "recurrence": "WEEKLY" },
+        "display": { "renderer": "LEADERBOARD" }
+      }
+    },
+    {
+      "id": "club_150",
+      "name": "150 Club",
+      "tagline": "Everyone aims for 150 active minutes this week.",
+      "icon": "target",
+      "durationDays": 7,
+      "fields": ["goal", "recurrence"],
+      "spec": {
+        "kind": "TARGET",
+        "metric": { "id": "active_minutes" },
+        "daily": { "op": "value" },
+        "aggregate": "SUM",
+        "goal": { "target": 150 },
+        "ranking": { "tieBreak": "EARLIEST_FINISH" },
+        "display": { "renderer": "PROGRESS" }
+      }
+    },
+    {
+      "id": "workout_streak",
+      "name": "Workout Streak",
+      "tagline": "Longest run of days with a workout.",
+      "icon": "fire",
+      "durationDays": 30,
+      "fields": ["duration"],
+      "spec": {
+        "kind": "COMPETE",
+        "metric": { "id": "workout_count" },
+        "daily": { "op": "atLeast", "value": 1 },
+        "aggregate": "LONGEST_STREAK",
+        "ranking": { "tieBreak": "SUM" },
+        "display": { "renderer": "LEADERBOARD" }
+      }
+    },
+    {
+      "id": "run_club",
+      "name": "Run Club",
+      "tagline": "Most distance from runs.",
+      "icon": "run",
+      "durationDays": 30,
+      "fields": ["duration"],
+      "spec": {
+        "kind": "COMPETE",
+        "metric": { "id": "distance", "filter": { "workoutTypes": ["RUNNING", "RUNNING_TREADMILL"] } },
+        "daily": { "op": "value" },
+        "aggregate": "SUM",
+        "display": { "renderer": "LEADERBOARD" }
+      }
+    },
+    {
+      "id": "floors_frenzy",
+      "name": "Floors Frenzy",
+      "tagline": "Most floors climbed.",
+      "icon": "stairs",
+      "durationDays": 7,
+      "fields": ["duration"],
+      "spec": {
+        "kind": "COMPETE",
+        "metric": { "id": "floors" },
+        "daily": { "op": "value" },
+        "aggregate": "SUM",
+        "display": { "renderer": "LEADERBOARD" }
+      }
+    },
+    {
+      "id": "distance_together",
+      "name": "Distance Together",
+      "tagline": "Walk a route as a group.",
+      "icon": "route",
+      "durationDays": 14,
+      "fields": ["duration", "goal"],
+      "spec": {
+        "kind": "TEAM",
+        "metric": { "id": "steps" },
+        "daily": { "op": "value" },
+        "aggregate": "SUM",
+        "goal": { "target": 200000 },
+        "display": { "renderer": "ROUTE", "theme": { "unit": "km_from_steps" } }
+      }
+    },
+    {
+      "id": "boss_battle",
+      "name": "Boss Battle",
+      "tagline": "Every step is a hit on the Couch Dragon.",
+      "icon": "boss",
+      "durationDays": 7,
+      "fields": ["duration", "goal"],
+      "spec": {
+        "kind": "TEAM",
+        "metric": { "id": "steps" },
+        "daily": { "op": "value" },
+        "aggregate": "SUM",
+        "goal": { "target": 500000 },
+        "display": { "renderer": "BOSS", "theme": { "boss": "Couch Dragon" } }
+      }
+    },
+    {
+      "id": "sleep_bank",
+      "name": "Sleep Bank",
+      "tagline": "Bank sleep hours together.",
+      "icon": "sleep",
+      "durationDays": 30,
+      "fields": ["duration", "goal"],
+      "spec": {
+        "kind": "TEAM",
+        "metric": { "id": "sleep_minutes" },
+        "daily": { "op": "value" },
+        "aggregate": "SUM",
+        "goal": { "target": 30000 },
+        "display": { "renderer": "PROGRESS" }
+      }
+    },
+    {
+      "id": "sleep_pact",
+      "name": "Sleep Pact",
+      "tagline": "In bed on time, enough sleep, every night.",
+      "icon": "moon",
+      "durationDays": 14,
+      "fields": ["duration", "bedtime", "minSleep", "days"],
+      "spec": {
+        "kind": "TARGET",
+        "metric": { "id": "sleep_minutes" },
+        "daily": {
+          "op": "all",
+          "conditions": [
+            { "metric": "bedtime", "cmp": "<=", "value": -60, "toleranceMin": 30 },
+            { "metric": "sleep_minutes", "cmp": ">=", "value": 420 }
+          ]
+        },
+        "aggregate": "DAYS_HIT",
+        "goal": { "target": 14 },
+        "groupStreak": true,
+        "display": { "renderer": "BOARD", "theme": { "shareBedtime": "true" } }
+      }
+    },
+    {
+      "id": "mindful_month",
+      "name": "Mindful Month",
+      "tagline": "Ten mindful minutes on 20 days.",
+      "icon": "spa",
+      "durationDays": 30,
+      "fields": ["duration", "dailyTarget", "goal"],
+      "spec": {
+        "kind": "TARGET",
+        "metric": { "id": "mindful_minutes" },
+        "daily": { "op": "atLeast", "value": 10 },
+        "aggregate": "DAYS_HIT",
+        "goal": { "target": 20 },
+        "display": { "renderer": "PROGRESS" }
+      }
+    },
+    {
+      "id": "custom",
+      "name": "Custom",
+      "tagline": "Pick the metric, the daily rule and how it's scored.",
+      "icon": "tune",
+      "durationDays": 7,
+      "fields": ["kind", "metric", "dailyRule", "aggregate", "duration", "goal", "recurrence"],
+      "spec": {
+        "kind": "COMPETE",
+        "metric": { "id": "steps" },
+        "daily": { "op": "value" },
+        "aggregate": "SUM",
+        "display": { "renderer": "LEADERBOARD" }
+      }
+    }
+  ]
+}

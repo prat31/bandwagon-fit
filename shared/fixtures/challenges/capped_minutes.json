@@ -1,0 +1,20 @@
+{
+  "name": "Daily cap limits each day; weekday filter skips weekends",
+  "spec": {
+    "schemaVersion": 1, "kind": "COMPETE", "metric": { "id": "active_minutes" },
+    "daily": { "op": "cap", "max": 60 }, "aggregate": "SUM",
+    "window": { "start": "2026-11-06", "end": "2026-11-09", "days": [1, 2, 3, 4, 5] },
+    "display": { "templateId": "active_league", "renderer": "LEADERBOARD", "title": "Minutes" }
+  },
+  "members": {
+    "a": [
+      { "date": "2026-11-06", "activeMinutes": 200, "shared": ["active_minutes"] },
+      { "date": "2026-11-07", "activeMinutes": 90, "shared": ["active_minutes"] },
+      { "date": "2026-11-08", "activeMinutes": 90, "shared": ["active_minutes"] },
+      { "date": "2026-11-09", "activeMinutes": 30, "shared": ["active_minutes"] }
+    ]
+  },
+  "expected": {
+    "a": { "score": 90, "daysHit": 2, "daysWithData": 2 }
+  }
+}

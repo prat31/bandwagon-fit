@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "bandwagon-dev",
+    "dev": "bandwagon-dev",
+    "prod": "bandwagon-prod"
+  }
+}

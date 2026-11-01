@@ -1,0 +1,23 @@
+{
+  "name": "Longest streak of days with a run; other workout types don't count",
+  "spec": {
+    "schemaVersion": 1, "kind": "COMPETE",
+    "metric": { "id": "workout_count", "filter": { "workoutTypes": ["RUNNING"] } },
+    "daily": { "op": "atLeast", "value": 1 }, "aggregate": "LONGEST_STREAK",
+    "window": { "start": "2026-11-02", "end": "2026-11-07" },
+    "display": { "templateId": "workout_streak", "renderer": "LEADERBOARD", "title": "Runs" }
+  },
+  "members": {
+    "a": [
+      { "date": "2026-11-02", "workoutCount": 1, "workoutsByType": { "RUNNING": { "minutes": 30, "count": 1 } }, "shared": ["workout_count"] },
+      { "date": "2026-11-03", "workoutCount": 1, "workoutsByType": { "RUNNING": { "minutes": 30, "count": 1 } }, "shared": ["workout_count"] },
+      { "date": "2026-11-04", "workoutCount": 1, "workoutsByType": { "YOGA": { "minutes": 30, "count": 1 } }, "shared": ["workout_count"] },
+      { "date": "2026-11-05", "workoutCount": 1, "workoutsByType": { "RUNNING": { "minutes": 30, "count": 1 } }, "shared": ["workout_count"] },
+      { "date": "2026-11-06", "workoutCount": 1, "workoutsByType": { "RUNNING": { "minutes": 30, "count": 1 } }, "shared": ["workout_count"] },
+      { "date": "2026-11-07", "workoutCount": 1, "workoutsByType": { "RUNNING": { "minutes": 30, "count": 1 } }, "shared": ["workout_count"] }
+    ]
+  },
+  "expected": {
+    "a": { "score": 3, "daysHit": 5, "longestStreak": 3 }
+  }
+}

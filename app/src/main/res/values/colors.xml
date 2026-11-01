@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Window and splash colours before Compose draws; AMOLED black + bright green accent. -->
+    <color name="window_background">#000000</color>
+    <color name="brand_green">#4ADE80</color>
+</resources>

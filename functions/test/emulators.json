@@ -1,0 +1,11 @@
+{
+  "firestore": {},
+  "emulators": {
+    "firestore": { "port": 8281 },
+    "auth": { "port": 9291 },
+    "ui": { "enabled": false },
+    "hub": { "port": 4481 },
+    "logging": { "port": 4581 },
+    "singleProjectMode": true
+  }
+}

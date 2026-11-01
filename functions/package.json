@@ -1,0 +1,31 @@
+{
+  "name": "bandwagon-functions",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cloud Functions for Bandwagon: rollups, sleep evaluation, invites and membership.",
+  "main": "lib/index.js",
+  "engines": {
+    "node": "22"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test test/domain.test.ts",
+    "test:rules": "cd .. && firebase emulators:exec --config functions/test/emulators.json --only firestore --project demo-bandwagon-test \"tsx --test functions/test/rules.test.ts\"",
+    "test:groups": "cd .. && firebase emulators:exec --config functions/test/emulators.json --only firestore,auth --project demo-bandwagon-test \"tsx --test --test-concurrency=1 functions/test/groups.test.ts\"",
+    "serve": "npm run build && cd .. && firebase emulators:start --only auth,firestore,functions,storage --project bandwagon-dev",
+    "deploy": "npm run build && cd .. && firebase deploy --only functions"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.0.2",
+    "firebase-functions": "^6.3.0"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^6.0.0",
+    "@types/node": "^22.10.2",
+    "firebase": "^13.1.0",
+    "firebase-tools": "^15.34.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bandwagon — join a group</title>
+    <meta name="description" content="Small, friendly health loops with the people you already know." />
+    <style>
+      :root { color-scheme: light dark; --coral: #ff6b4a; }
+      body {
+        margin: 0; min-height: 100vh; display: grid; place-items: center;
+        font: 16px/1.6 system-ui, -apple-system, Segoe UI, sans-serif;
+        background: #fff8f3; color: #1e1b2e; padding: 24px;
+      }
+      main { max-width: 34rem; }
+      h1 { font-size: 2.4rem; margin: 0 0 0.5rem; }
+      .card { background: #ffffff; border-radius: 18px; padding: 28px; box-shadow: 0 12px 40px rgba(0,0,0,.08); }
+      a.button {
+        display: inline-block; margin-top: 1rem; background: var(--coral); color: #1e1b2e;
+        text-decoration: none; padding: 12px 20px; border-radius: 999px; font-weight: 600;
+      }
+      code { background: rgba(0,0,0,.06); padding: 2px 6px; border-radius: 6px; }
+      footer { margin-top: 1.5rem; font-size: 0.85rem; opacity: 0.75; }
+      @media (prefers-color-scheme: dark) {
+        body { background: #16131f; color: #f3eef7; }
+        .card { background: #24202f; }
+        a { color: #ff8a6f; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="card">
+        <h1>Bandwagon</h1>
+        <p>You have an invite. Open it on your Android phone to join the group.</p>
+        <p>Invite code: <code id="code">—</code></p>
+        <a class="button" id="store" href="https://play.google.com/store/apps/details?id=fit.bandwagon">Get Bandwagon</a>
+        <p>Already installed? The link should open the app automatically. If it does not, enter the code in the app under <strong>Join group</strong>.</p>
+        <footer>
+          <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a><br />
+          Bandwagon is a wellbeing app, not a medical or emergency service.
+        </footer>
+      </div>
+    </main>
+    <script>
+      const parts = window.location.pathname.split("/").filter(Boolean);
+      const code = parts[0] === "i" && parts[1] ? parts[1].toUpperCase() : null;
+      if (code) {
+        document.getElementById("code").textContent = code;
+        document.getElementById("store").href += "&referrer=" + encodeURIComponent("invite=" + code);
+      }
+    </script>
+  </body>
+</html>

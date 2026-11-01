@@ -1,0 +1,23 @@
+{
+  "name": "Team goals add every member's contribution",
+  "spec": {
+    "schemaVersion": 1, "kind": "TEAM", "metric": { "id": "sleep_minutes" }, "daily": { "op": "value" },
+    "aggregate": "SUM", "goal": { "target": 2000 },
+    "window": { "start": "2026-11-02", "end": "2026-11-03" },
+    "display": { "templateId": "sleep_bank", "renderer": "PROGRESS", "title": "Bank" }
+  },
+  "members": {
+    "a": [
+      { "date": "2026-11-02", "sleep": { "start": "2026-11-01T17:00:00Z", "end": "2026-11-02T01:00:00Z", "durationMinutes": 480, "zoneId": "UTC" }, "shared": ["sleep_minutes"] },
+      { "date": "2026-11-03", "sleep": { "start": "2026-11-02T17:00:00Z", "end": "2026-11-03T00:00:00Z", "durationMinutes": 420, "zoneId": "UTC" }, "shared": ["sleep_minutes"] }
+    ],
+    "b": [
+      { "date": "2026-11-02", "sleep": { "start": "2026-11-01T22:00:00Z", "end": "2026-11-02T05:00:00Z", "durationMinutes": 400, "zoneId": "UTC" }, "shared": ["sleep_minutes"] }
+    ]
+  },
+  "expected": {
+    "a": { "score": 900, "progress": null },
+    "b": { "score": 400, "progress": null }
+  },
+  "teamTotal": 1300
+}

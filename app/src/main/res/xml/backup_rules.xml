@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Health data never leaves the phone through backups: both local databases are excluded. -->
+<full-backup-content>
+    <exclude domain="database" path="bandwagon.db" />
+    <exclude domain="database" path="health_store.db" />
+    <exclude domain="sharedpref" path="bandwagon_sync.preferences_pb" />
+</full-backup-content>
