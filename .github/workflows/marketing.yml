@@ -1,0 +1,53 @@
+name: Marketing site
+
+# Builds bandwagon.fit from marketing/ (plus the legal and invite pages in web/) and deploys it to
+# GitHub Pages. Pull requests only build; pushes to main deploy.
+on:
+  push:
+    branches: [main]
+    paths:
+      - marketing/**
+      - web/**
+      - .github/workflows/marketing.yml
+  pull_request:
+    paths:
+      - marketing/**
+      - web/**
+      - .github/workflows/marketing.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One deploy at a time; never cancel one that has started.
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: marketing/build.sh
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: marketing/dist
+          # Keeps .well-known/assetlinks.json, which Android App Links verification needs.
+          include-hidden-files: true
+
+  deploy:
+    name: Deploy to GitHub Pages
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

@@ -85,3 +85,6 @@ fastlane/test_output/
 # Private planning notes (kept locally, not published)
 /plan/
 /docs/plan-*.md
+
+# Marketing site build output
+/marketing/dist/

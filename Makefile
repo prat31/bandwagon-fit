@@ -43,7 +43,7 @@ launch = adb shell am start -n "$$(adb shell cmd package resolve-activity --brie
 .PHONY: help doctor setup sdk avd emulator emulator-stop emulator-wipe screenshot devices \
         build install run test connected-test lint clean logcat \
         seeder-install seeder-run hc-open fake-member functions-install functions-test functions-rules-test functions-group-test functions-serve \
-        check-gradlew
+        marketing-build marketing-serve check-gradlew
 
 help: ## Show this help
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z_-]+:.*## / {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -150,3 +150,11 @@ functions-group-test: ## Run group integration tests on throwaway emulators (nee
 
 functions-serve: ## Build Functions and start the Firebase emulators (demo project, no Firebase account needed)
 	cd functions && $(FUNCTIONS_ENV) npm run serve
+
+# --- Marketing site (bandwagon.fit) ----------------------------------------
+
+marketing-build: ## Build the bandwagon.fit site into marketing/dist
+	marketing/build.sh
+
+marketing-serve: marketing-build ## Build and serve the bandwagon.fit site on http://localhost:4173
+	python3 -m http.server 4173 --directory marketing/dist

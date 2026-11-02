@@ -40,7 +40,8 @@ CTAs and active states; orange, yellow, red and blue are the supporting and cate
   `BandwagonTheme.extendedColors.success` / `successContainer`.
 - **Window and splash:** `app/src/main/res/values{,-night}/colors.xml` and `themes.xml`. The theme
   is dark (black window) regardless of the system setting, so light mode never appears.
-- **Web pages** (`web/`): keep in sync if the palette changes (not part of the app theme).
+- **Web pages** (`web/`) and the **marketing site** (`marketing/`, deployed to bandwagon.fit by
+  GitHub Pages): keep in sync if the palette changes (not part of the app theme).
 
 ### Rules
 

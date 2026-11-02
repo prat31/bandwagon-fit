@@ -6,26 +6,22 @@
     <title>Bandwagon — join a group</title>
     <meta name="description" content="Small, friendly health loops with the people you already know." />
     <style>
-      :root { color-scheme: light dark; --coral: #ff6b4a; }
+      :root { color-scheme: dark; }
       body {
         margin: 0; min-height: 100vh; display: grid; place-items: center;
-        font: 16px/1.6 system-ui, -apple-system, Segoe UI, sans-serif;
-        background: #fff8f3; color: #1e1b2e; padding: 24px;
+        font: 16px/1.6 Roboto, system-ui, -apple-system, Segoe UI, sans-serif;
+        background: #000000; color: #ffffff; padding: 24px;
       }
       main { max-width: 34rem; }
       h1 { font-size: 2.4rem; margin: 0 0 0.5rem; }
-      .card { background: #ffffff; border-radius: 18px; padding: 28px; box-shadow: 0 12px 40px rgba(0,0,0,.08); }
+      .card { background: #161616; border: 1px solid #262628; border-radius: 24px; padding: 28px; }
+      a { color: #4ade80; }
       a.button {
-        display: inline-block; margin-top: 1rem; background: var(--coral); color: #1e1b2e;
+        display: inline-block; margin-top: 1rem; background: #4ade80; color: #000000;
         text-decoration: none; padding: 12px 20px; border-radius: 999px; font-weight: 600;
       }
-      code { background: rgba(0,0,0,.06); padding: 2px 6px; border-radius: 6px; }
-      footer { margin-top: 1.5rem; font-size: 0.85rem; opacity: 0.75; }
-      @media (prefers-color-scheme: dark) {
-        body { background: #16131f; color: #f3eef7; }
-        .card { background: #24202f; }
-        a { color: #ff8a6f; }
-      }
+      code { background: #1c1c1e; padding: 2px 6px; border-radius: 6px; }
+      footer { margin-top: 1.5rem; font-size: 0.85rem; color: #a1a1aa; }
     </style>
   </head>
   <body>
@@ -48,6 +44,9 @@
       if (code) {
         document.getElementById("code").textContent = code;
         document.getElementById("store").href += "&referrer=" + encodeURIComponent("invite=" + code);
+      } else if (window.location.pathname !== "/") {
+        // Served as the 404 page on GitHub Pages: anything that isn't an invite goes home.
+        window.location.replace("/");
       }
     </script>
   </body>
