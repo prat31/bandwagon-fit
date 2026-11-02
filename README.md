@@ -155,14 +155,25 @@ make lint
 ## Releasing to Google Play
 
 1. Fetch each flavour's Firebase config into `app/src/<dev|prod>/google-services.json` (git-ignored).
-2. Copy `keystore.properties.example` to `keystore.properties` and fill in your **upload** key
-   (or set `BANDWAGON_STOREFILE`, `BANDWAGON_STOREPASSWORD`, `BANDWAGON_KEYALIAS` and
-   `BANDWAGON_KEYPASSWORD` in CI). Play App Signing holds the app key.
-3. Build the bundle: `./gradlew :app:bundleProdRelease`.
-4. Deploy the backend: `firebase deploy --only firestore,storage,functions,hosting --project prod`.
-5. Put the Play App Signing SHA-256 in `web/.well-known/assetlinks.json` for invite links.
-6. In Play Console, complete the Health Connect declaration and the Data safety form. Bandwagon
-   has no ads or third-party tracking.
+2. Create the **upload** key once and keep it (and its password) outside the repo, backed up:
+   `keytool -genkeypair -v -keystore ~/keys/bandwagon-upload.jks -alias upload -keyalg RSA -keysize 4096 -validity 10000`.
+   Copy `keystore.properties.example` to `keystore.properties` and point it at the key (or set
+   `BANDWAGON_STOREFILE`, `BANDWAGON_STOREPASSWORD`, `BANDWAGON_KEYALIAS` and
+   `BANDWAGON_KEYPASSWORD` in CI). Play App Signing holds the app signing key.
+3. Build the bundle with a `versionCode` higher than the last upload:
+   `make bundle VERSION_CODE=2 VERSION_NAME=0.1.1`. `make check-alignment` confirms the native
+   libraries meet Play's 16 KB page size rule.
+4. Deploy the backend: `firebase deploy --only firestore,storage,functions --project prod`. The
+   pages in `web/` (privacy, terms, account deletion, invite links, `assetlinks.json`) ship with the
+   bandwagon.fit site through GitHub Pages.
+5. After the first upload, copy the **app signing** and **upload** certificate fingerprints from
+   *Play Console → Test and release → App integrity*: SHA-1 and SHA-256 of both into the Android app
+   in Firebase (then re-download `google-services.json`, or Google sign-in fails on Play installs),
+   and both SHA-256 values into `web/.well-known/assetlinks.json` for invite links.
+6. In Play Console, complete the Health Connect declaration and the Data safety form from the
+   [privacy policy](web/privacy.html). The requested health types are `HealthDataType.REQUESTED`
+   (`core/model`), mirrored in the app manifest. Bandwagon has no ads, no advertising ID and no
+   third-party tracking.
 
 ## Contributing
 

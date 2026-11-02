@@ -10,46 +10,154 @@
       h1, h2 { line-height: 1.2; }
       a { color: #4ade80; }
       code { background: #1c1c1e; padding: 2px 5px; border-radius: 5px; }
+      .muted { color: #a1a1aa; }
     </style>
   </head>
   <body>
     <h1>Bandwagon privacy policy</h1>
-    <p><em>Last updated: 31 October 2026</em></p>
-
-    <h2>What we read</h2>
+    <p><em>Last updated: 2 November 2026</em></p>
     <p>
-      With your permission, Bandwagon reads steps, exercise sessions and sleep sessions from
-      Android Health Connect. We use this to calculate challenges, team goals and sleep pacts.
+      Bandwagon is an Android app for challenges, team goals and sleep pacts with friends. This policy
+      explains what the app reads, what leaves your phone, who can see it and how to delete it.
+    </p>
+
+    <h2>Health Connect data we read</h2>
+    <p>
+      With your permission, Bandwagon reads these types from Android Health Connect. You choose which
+      ones to share in Health Connect's own screen, and can change that at any time.
+    </p>
+    <ul>
+      <li><strong>Activity:</strong> steps, distance, active calories, total calories burned,
+        exercise sessions (workouts), floors climbed, activity intensity (active minutes) and
+        wheelchair pushes.</li>
+      <li><strong>Sleep:</strong> sleep sessions and stages.</li>
+      <li><strong>Heart and vitals:</strong> heart rate, resting heart rate, heart rate variability,
+        respiratory rate and skin temperature.</li>
+      <li><strong>Body:</strong> weight.</li>
+      <li><strong>Nutrition and wellness:</strong> hydration and mindfulness sessions.</li>
+    </ul>
+    <p>
+      Bandwagon also asks to read in the background, so group standings and sleep pacts stay up to date
+      about once an hour without opening the app. It does not ask for data older than Health Connect's
+      default 30-day window.
+    </p>
+
+    <h2>What stays on your phone</h2>
+    <p>
+      Raw samples and individual records never leave your device. Heart rate, heart rate variability,
+      respiratory rate, skin temperature, weight, hydration, total calories and sleep stages are only
+      used on your phone: for the Health tab, your personal goals, and the sleep, move and recovery
+      scores on Home. Bandwagon keeps a local cache of these daily values and scores so the app opens
+      quickly.
     </p>
 
     <h2>What leaves your phone</h2>
-    <p>
-      Only one <strong>daily summary</strong> per day: date, time zone, step total, workout minutes,
-      workout count and sleep duration/bedtime. Raw samples and individual records never leave the
-      device.
-    </p>
+    <p>At most one <strong>daily summary</strong> per day is uploaded, containing:</p>
+    <ul>
+      <li>the date and your time zone;</li>
+      <li>daily totals for steps, distance, active calories, active minutes, workout minutes, workout
+        count (also split by workout type, with distance), floors and mindful minutes;</li>
+      <li>your main sleep of the night: start time, end time and minutes asleep;</li>
+      <li>which data types you shared, the names of the apps that wrote the data, and whether manual
+        entries were left out.</li>
+    </ul>
+    <p>A field is left empty when you have not shared that type.</p>
+    <p>For your account and profile we also store:</p>
+    <ul>
+      <li>from Google sign-in: your name, email address and account ID;</li>
+      <li>your display name, username, optional profile photo and optional "about" text;</li>
+      <li>an optional alias and avatar, used instead of your name in anonymous groups;</li>
+      <li>your time zone, settings (units, notification preferences, and birth year and sex if you
+        enter them) and goals;</li>
+      <li>the groups you belong to, the challenges you take part in and the reactions you send;</li>
+      <li>a notification token for each device you sign in on.</li>
+    </ul>
 
     <h2>Who can see it</h2>
+    <ul>
+      <li><strong>Your daily summaries</strong> can only be read by you. Other members never see them
+        directly: our servers copy only the results a feature needs (for example your step total in a
+        step challenge, or whether you kept a sleep pact) into that group's standings.</li>
+      <li><strong>Members of your groups</strong> see your display name, username and photo, or only
+        your alias and avatar in an anonymous group, plus your challenge results and reactions in that
+        group.</li>
+      <li><strong>Other signed-in users</strong> can open your public profile (username, display name,
+        photo and "about" text), for example from an invite you send. Your email address is never
+        shown to anyone.</li>
+      <li><strong>Public groups</strong> appear in Discover with their name, description, tags, photo
+        and member count. Their members, standings and feed are visible only to members.</li>
+    </ul>
+
+    <h2>Analytics and crash reports</h2>
     <p>
-      Other members never read your daily summaries directly. Cloud Functions copy only the fields a
-      feature needs into precomputed group standings. Sleep duration and sleep stages are never
-      shared in Sleep Buddies.
+      We use Firebase Analytics to understand which screens and features are used, and Firebase
+      Crashlytics to receive crash reports (device model, Android version, app version and the stack
+      trace). Neither contains health data. The app does not use the advertising ID and contains no
+      advertising SDKs.
+    </p>
+
+    <h2>Service providers</h2>
+    <p>
+      Bandwagon runs on Google Firebase (Authentication, Cloud Firestore, Cloud Functions, Cloud
+      Storage, Cloud Messaging, Analytics and Crashlytics), which processes this data on our behalf on
+      Google Cloud servers. We do not share your data with anyone else.
+    </p>
+
+    <h2>Health Connect limited use</h2>
+    <p>
+      The use of information received from Health Connect adheres to the Health Connect Permissions
+      policy, including the Limited Use requirements. Health Connect data is used only
+      to provide Bandwagon's features described above. It is never sold, never used for advertising,
+      never used to determine credit-worthiness or for lending, and never transferred to anyone except
+      as needed to run those features (the members you choose and our service provider above) or as
+      required by law.
     </p>
 
     <h2>What we never do</h2>
     <p>
-      We do not sell health data, use it for advertising, or use it to make medical or diagnostic
-      claims. There are no advertising SDKs in the app.
+      We do not sell any data, use health data for advertising, or make medical or diagnostic claims.
+      Bandwagon is not a medical device.
     </p>
 
-    <h2>Retention and deletion</h2>
+    <h2>Security</h2>
     <p>
-      Daily summaries are kept for 400 days, feed events for 90 days and alerts for 180 days. You can
-      delete your account and all of its data in the app under <strong>You → Delete account</strong>,
-      or <a href="/delete-account">without the app</a>.
+      All data is encrypted in transit (HTTPS/TLS) and encrypted at rest by Google Cloud. Access rules
+      make sure each person can only read their own data and the groups they belong to.
+    </p>
+
+    <h2>Retention</h2>
+    <ul>
+      <li>Daily summaries: 400 days, then deleted automatically.</li>
+      <li>Group feed events: 90 days.</li>
+      <li>Profile, goals, settings and group memberships: until you delete them or your account.</li>
+      <li>Crash reports: 90 days, kept by Firebase Crashlytics.</li>
+    </ul>
+
+    <h2>Your choices</h2>
+    <ul>
+      <li>Stop sharing any type, or all of them, in Health Connect. Groups then show that your data is
+        paused instead of showing zeros.</li>
+      <li>Download a copy of your data under <strong>You → Download my data</strong> in the app.</li>
+      <li>Delete your account and all of the data above in the app under
+        <strong>You → Delete account</strong>, or <a href="/delete-account">without the app</a>.
+        Health Connect data on your phone is not touched.</li>
+    </ul>
+
+    <h2>Age</h2>
+    <p>
+      Bandwagon is for people aged 18 and over. We do not knowingly collect data from anyone younger;
+      if you believe we have, contact us and we will delete it.
+    </p>
+
+    <h2>Changes</h2>
+    <p>
+      If this policy changes, we update the date above and, for significant changes, tell you in the
+      app before they take effect.
     </p>
 
     <h2>Contact</h2>
-    <p>Questions: <a href="mailto:privacy@bandwagon.fit">privacy@bandwagon.fit</a>.</p>
+    <p>Questions or requests: <a href="mailto:privacy@bandwagon.fit">privacy@bandwagon.fit</a>.</p>
+
+    <p class="muted"><a href="/terms">Terms</a> · <a href="/delete-account">Delete your account</a></p>
   </body>
 </html>

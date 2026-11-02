@@ -12,7 +12,7 @@ android {
     defaultConfig {
         applicationId = "fit.bandwagon.tools.hcseeder"
         minSdk = 28
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "0.1"
     }

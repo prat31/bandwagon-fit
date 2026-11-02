@@ -197,7 +197,6 @@ data class MetricDetailState(
     val selected: Int? = null,
     val loading: Boolean = true,
     val granted: Boolean = true,
-    val history: Boolean = true,
     val macros: Triple<Double, Double, Double>? = null,
 )
 
@@ -228,7 +227,7 @@ class MetricDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val caps = capabilities.capabilities.value
             val granted = caps.granted(metric.dataType)
-            _state.update { it.copy(loading = true, granted = granted, history = caps.history) }
+            _state.update { it.copy(loading = true, granted = granted) }
             if (!granted) return@launch _state.update { it.copy(loading = false) }
             val period = _state.value.period
             val today = LocalDate.now()

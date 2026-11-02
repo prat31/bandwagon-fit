@@ -31,6 +31,7 @@ kotlin {
 
 dependencies {
     api(project(":core:model"))
+    implementation(project(":core:ui"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)

@@ -39,8 +39,9 @@ import fit.bandwagon.core.model.HealthDataType
 import kotlin.reflect.KClass
 
 /**
- * The single map from platform-agnostic data types to Health Connect. Every entry must also be
- * declared in the app manifest and in the Play Console health declaration.
+ * The single map from platform-agnostic data types to Health Connect. [ENTRIES] holds only the
+ * types this release requests ([HealthDataType.REQUESTED]); each must also be declared in the app
+ * manifest and in the Play Console health declaration.
  */
 object HealthPermissions {
     data class Entry(
@@ -51,7 +52,7 @@ object HealthPermissions {
         val permission: String get() = HealthPermission.getReadPermission(record)
     }
 
-    val ENTRIES: Map<HealthDataType, Entry> = mapOf(
+    private val ALL: Map<HealthDataType, Entry> = mapOf(
         HealthDataType.STEPS to Entry(StepsRecord::class),
         HealthDataType.DISTANCE to Entry(DistanceRecord::class),
         HealthDataType.ACTIVE_CALORIES to Entry(ActiveCaloriesBurnedRecord::class),
@@ -86,7 +87,8 @@ object HealthPermissions {
         HealthDataType.MINDFULNESS to Entry(MindfulnessSessionRecord::class, HealthConnectFeatures.FEATURE_MINDFULNESS_SESSION),
     )
 
-    const val HISTORY = HealthPermission.PERMISSION_READ_HEALTH_DATA_HISTORY
+    val ENTRIES: Map<HealthDataType, Entry> = ALL.filterKeys { it in HealthDataType.REQUESTED }
+
     const val BACKGROUND = HealthPermission.PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND
 
     fun permissionOf(type: HealthDataType): String = ENTRIES.getValue(type).permission
@@ -99,10 +101,7 @@ object HealthPermissions {
      */
     fun request(types: Collection<HealthDataType>, supported: Set<HealthDataType>, special: Boolean = true): Set<String> =
         buildSet {
-            types.filter { it in supported }.forEach { add(permissionOf(it)) }
-            if (special) {
-                add(HISTORY)
-                add(BACKGROUND)
-            }
+            types.filter { it in supported && it in ENTRIES }.forEach { add(permissionOf(it)) }
+            if (special) add(BACKGROUND)
         }
 }

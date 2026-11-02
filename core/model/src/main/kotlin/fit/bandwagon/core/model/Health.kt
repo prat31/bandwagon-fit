@@ -22,9 +22,9 @@ enum class HealthCategory(val label: String) {
 }
 
 /**
- * Every Health Connect data type the app reads, platform-agnostic. `core:health` maps each to its
- * Health Connect permission. Every type here appears in the Health tab: Google Play rejects
- * permissions no feature uses, so this list is also the Play Console declaration.
+ * Every Health Connect data type the app can read, platform-agnostic. `core:health` maps each
+ * [REQUESTED] type to its Health Connect permission; the rest stay in code but are never asked for,
+ * so their tiles never appear.
  */
 enum class HealthDataType(val label: String, val category: HealthCategory) {
     STEPS("Steps", HealthCategory.ACTIVITY),
@@ -59,6 +59,25 @@ enum class HealthDataType(val label: String, val category: HealthCategory) {
     NUTRITION("Nutrition", HealthCategory.NUTRITION),
     HYDRATION("Hydration", HealthCategory.NUTRITION),
     MINDFULNESS("Mindfulness", HealthCategory.WELLNESS),
+    ;
+
+    companion object {
+        /**
+         * Types left out of this release: they only show as Health tab tiles, and Google Play rejects
+         * permissions no feature visibly needs. Adding one back means the manifest, the Play Console
+         * health declaration and the privacy policy too.
+         */
+        private val DEFERRED = setOf(
+            ELEVATION, VO2_MAX, SPEED, POWER, SPO2, BODY_TEMPERATURE, BLOOD_PRESSURE, BLOOD_GLUCOSE,
+            HEIGHT, BODY_FAT, LEAN_BODY_MASS, BMR, BODY_WATER, BONE_MASS, NUTRITION,
+        )
+
+        /**
+         * Types the app asks for: each drives a challenge, goal or Home card. This list is the
+         * manifest's health permissions and the Play Console declaration.
+         */
+        val REQUESTED: Set<HealthDataType> = entries.filterNot { it in DEFERRED }.toSet()
+    }
 }
 
 enum class Access {
@@ -72,8 +91,6 @@ enum class Access {
 /** What the app may read right now. Recomputed on start, on resume and after permission results. */
 data class HealthCapabilities(
     val access: Map<HealthDataType, Access> = emptyMap(),
-    /** READ_HEALTH_DATA_HISTORY: data older than 30 days before the first grant. */
-    val history: Boolean = false,
     /** Background reads granted and supported. */
     val background: Boolean = false,
     /** False once Health Connect stops showing its dialog (two denials on Android 14+). */

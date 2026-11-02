@@ -119,7 +119,6 @@ class HealthConnectSource @Inject constructor(
         }
         return HealthCapabilities(
             access = access,
-            history = HealthPermissions.HISTORY in granted,
             background = HealthPermissions.BACKGROUND in granted &&
                 featureAvailable(HealthConnectFeatures.FEATURE_READ_HEALTH_DATA_IN_BACKGROUND),
             canRequestAgain = permissionMemory.canRequestAgain(),

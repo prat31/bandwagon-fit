@@ -18,9 +18,11 @@ android {
     defaultConfig {
         applicationId = "fit.bandwagon"
         minSdk = 28
-        targetSdk = 35
-        versionCode = 1
-        versionName = "0.1.0"
+        targetSdk = 36
+        // Every Play upload needs a higher versionCode: `make bundle VERSION_CODE=…` or CI passes
+        // -PversionCode; local builds keep 1.
+        versionCode = (findProperty("versionCode") as String?)?.toInt() ?: 1
+        versionName = (findProperty("versionName") as String?) ?: "0.1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // Host the dev build dials for the Auth/Firestore/Functions emulators. The Android emulator
         // reaches the host machine as 10.0.2.2; a physical device uses adb reverse (127.0.0.1) or a

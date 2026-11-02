@@ -27,6 +27,24 @@
   --radius-sm: 14px;
   --max: 1120px;
   --font: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Motion: every transition uses these; prefers-reduced-motion shrinks them to ~0. Quick, with a
+     strong ease-out, so the page answers a touch or a scroll at once and settles softly. */
+  --duration-fast: 120ms;
+  --duration-normal: 220ms;
+  --duration-slow: 360ms;
+  --duration-reveal: 520ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 1ms;
+    --duration-normal: 1ms;
+    --duration-slow: 1ms;
+    --duration-reveal: 1ms;
+  }
 }
 
 *,
@@ -38,6 +56,8 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
+  /* Touch: no grey flash on tap; the press states below give the feedback instead. */
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -47,6 +67,15 @@ body {
   font: 400 17px/1.6 var(--font);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  /* Sideways swipes never drag the page or trigger back-navigation mid-scroll. */
+  overscroll-behavior-x: none;
+}
+
+a,
+button,
+summary {
+  /* No double-tap-to-zoom delay. */
+  touch-action: manipulation;
 }
 
 img,
@@ -115,7 +144,7 @@ p {
   backdrop-filter: saturate(160%) blur(16px);
   -webkit-backdrop-filter: saturate(160%) blur(16px);
   border-bottom: 1px solid transparent;
-  transition: border-color 0.2s;
+  transition: border-color var(--duration-normal) var(--ease-out);
 }
 
 .nav.scrolled {
@@ -182,6 +211,21 @@ p {
 .nav-cta:hover {
   text-decoration: none;
   filter: brightness(1.08);
+}
+
+/* Press states: a quick squeeze under the finger, like the app's buttons. */
+.brand,
+.nav-links a,
+.nav-cta {
+  transition-property: color, background-color, filter, transform;
+  transition-duration: var(--duration-fast);
+  transition-timing-function: var(--ease-out);
+}
+
+.brand:active,
+.nav-links a:active,
+.nav-cta:active {
+  transform: scale(0.97);
 }
 
 @media (max-width: 760px) {
@@ -1143,6 +1187,12 @@ p {
   font-size: 18px;
   cursor: pointer;
   list-style: none;
+  border-radius: inherit;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.faq summary:active {
+  background: var(--surface-variant);
 }
 
 .faq summary::-webkit-details-marker {
@@ -1161,7 +1211,7 @@ p {
   color: var(--green);
   font-size: 20px;
   font-weight: 500;
-  transition: transform 0.2s;
+  transition: transform var(--duration-normal) var(--ease-out);
 }
 
 .faq details[open] summary::after {
@@ -1240,6 +1290,7 @@ p {
 
 .site-footer nav a {
   color: var(--text-2);
+  transition: color var(--duration-fast) var(--ease-out);
 }
 
 .site-footer nav a:hover {
@@ -1253,12 +1304,15 @@ p {
 
 /* ---- Reveal on scroll --------------------------------------------------- */
 
+/* A short rise with a strong ease-out, like the app's rise-in: content arrives as you reach it
+   rather than drifting in. Cards in a row follow each other by a beat (--i, set by the script). */
 .reveal {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(12px);
   transition:
-    opacity 0.6s ease,
-    transform 0.6s ease;
+    opacity var(--duration-reveal) var(--ease-out),
+    transform var(--duration-reveal) var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 60ms);
 }
 
 .reveal.in {
@@ -1275,6 +1329,12 @@ p {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .brand:active,
+  .nav-links a:active,
+  .nav-cta:active {
+    transform: none;
   }
 
   .chip .dot {

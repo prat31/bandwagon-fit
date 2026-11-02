@@ -480,11 +480,10 @@ fun HealthDataScreen(onBack: () -> Unit, viewModel: YouViewModel = hiltViewModel
             }
             OutlinedButton(onClick = { openHealthConnectSettings(context) }, modifier = Modifier.fillMaxWidth()) { Text("Open Health Connect") }
             AppCard {
-                StatusRow("Older history (more than 30 days)", caps.history)
                 StatusRow("Background sync", caps.background)
             }
             HealthCategory.entries.forEach { category ->
-                val types = HealthDataType.entries.filter { it.category == category }
+                val types = HealthDataType.REQUESTED.filter { it.category == category }
                 SectionHeader(category.label)
                 AppCard {
                     types.forEachIndexed { i, type ->

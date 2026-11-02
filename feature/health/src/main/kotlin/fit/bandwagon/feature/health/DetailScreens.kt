@@ -133,8 +133,9 @@ fun MetricDetailScreen(onBack: () -> Unit, viewModel: MetricDetailViewModel = hi
 
             if (state.loading) LoadingState(Modifier.height(200.dp)) else Chart(state, viewModel::selectBar, color, imperial)
 
-            if (state.period.days > 30 && !state.history) {
-                Text("Share older history in Health Connect to see more than 30 days.", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            // Health Connect only reads back to 30 days before the first grant, so long charts start empty.
+            if (!state.loading && state.period.days > 30 && state.points.firstOrNull()?.value == null) {
+                Text("Charts start 30 days before you first shared and fill in as you keep using Bandwagon.", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
 
             Highlights(state, imperial)

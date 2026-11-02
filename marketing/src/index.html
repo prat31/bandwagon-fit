@@ -430,7 +430,12 @@
             }
           }
         }, { rootMargin: "0px 0px -10% 0px" });
-        document.querySelectorAll(".reveal").forEach((el) => reveal.observe(el));
+        document.querySelectorAll(".reveal").forEach((el) => {
+          // Stagger siblings that arrive together (bento cards, steps, a spotlight's two halves).
+          const peers = [...el.parentElement.children].filter((c) => c.classList.contains("reveal"));
+          el.style.setProperty("--i", Math.min(peers.indexOf(el), 4));
+          reveal.observe(el);
+        });
 
         // Spotlight clips load lazily and only play while on screen.
         const clips = new IntersectionObserver((entries) => {

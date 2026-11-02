@@ -30,10 +30,10 @@ class ShareHealthViewModel @Inject constructor(
     fun prepare(types: Collection<HealthDataType>): Set<String>? {
         val caps = capabilities.capabilities.value
         if (!caps.canRequestAgain) return null
-        val wanted = types.ifEmpty { HealthDataType.entries }
+        val wanted = types.ifEmpty { HealthDataType.REQUESTED }
         grantedBefore = caps.grantedTypes.map(HealthPermissions::permissionOf).toSet() +
-            listOfNotNull(HealthPermissions.HISTORY.takeIf { caps.history }, HealthPermissions.BACKGROUND.takeIf { caps.background })
-        requested = HealthPermissions.request(wanted, caps.supported.ifEmpty { HealthDataType.entries.toSet() })
+            listOfNotNull(HealthPermissions.BACKGROUND.takeIf { caps.background })
+        requested = HealthPermissions.request(wanted, caps.supported.ifEmpty { HealthDataType.REQUESTED })
         return requested
     }
 

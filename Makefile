@@ -41,7 +41,7 @@ launch = adb shell am start -n "$$(adb shell cmd package resolve-activity --brie
 
 .DEFAULT_GOAL := help
 .PHONY: help doctor setup sdk avd emulator emulator-stop emulator-wipe screenshot devices \
-        build install run test connected-test lint clean logcat \
+        build install run test connected-test lint clean logcat bundle check-signing check-alignment \
         seeder-install seeder-run hc-open fake-member functions-install functions-test functions-rules-test functions-group-test functions-serve \
         marketing-build marketing-serve check-gradlew
 
@@ -119,6 +119,29 @@ clean: check-gradlew ## Delete build outputs
 
 logcat: ## Stream logs for the app only
 	adb logcat --pid=$$(adb shell pidof -s $(APP_ID) | tr -d '\r')
+
+# --- Release ---------------------------------------------------------------
+
+# Play needs a higher versionCode for every upload; CI passes the run number.
+VERSION_CODE ?=
+VERSION_NAME ?= 0.1.0
+BUNDLE = app/build/outputs/bundle/prodRelease/app-prod-release.aab
+RELEASE_APK = app/build/outputs/apk/prod/release/app-prod-release*.apk
+ZIPALIGN = $(ANDROID_HOME)/build-tools/36.0.0/zipalign
+RELEASE_GRADLE = $(GRADLEW) --console=plain -PversionCode=$(or $(VERSION_CODE),1) -PversionName=$(VERSION_NAME)
+
+check-signing:
+	@[ -f keystore.properties ] || [ -n "$$BANDWAGON_STOREFILE" ] || { echo "No upload key: copy keystore.properties.example to keystore.properties (see README, Deploying)."; exit 1; }
+
+bundle: check-gradlew check-signing ## Build the signed Play bundle: make bundle VERSION_CODE=2 [VERSION_NAME=0.1.1]
+	@[ -n "$(VERSION_CODE)" ] || { echo "Set VERSION_CODE, higher than the last upload: make bundle VERSION_CODE=2"; exit 1; }
+	$(RELEASE_GRADLE) :app:bundleProdRelease
+	@echo $(BUNDLE)
+
+check-alignment: check-gradlew ## Build the prod release APK and check its native libraries are 16 KB aligned (Play requirement)
+	$(RELEASE_GRADLE) :app:assembleProdRelease
+	@# Unsigned without an upload key, which doesn't affect alignment.
+	$(ZIPALIGN) -c -P 16 -v 4 $$(ls $(RELEASE_APK) | head -1) | grep -E '\.so|Verification'
 
 # --- Health Connect test data ----------------------------------------------
 
